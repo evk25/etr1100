@@ -15,13 +15,13 @@ Implements:
 import sys
 from machine import SoftI2C, Pin, ADC
 from utime import sleep, ticks_ms, ticks_us, ticks_diff
-from led import LED
-from button import Button
-from buzzer import Buzzer
-from stepper import Stepper
-from hcsr04 import HCSR04
-import oled
-import mpu6050
+from src.led import LED
+from src.button import Button
+from src.buzzer import Buzzer
+from src.stepper import Stepper
+from src.hcsr04 import HCSR04
+import src.oled as oled
+import src.mpu6050 as mpu6050
 
 try:
     import uselect

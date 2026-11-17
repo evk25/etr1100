@@ -60,9 +60,33 @@ Send newline-terminated commands via the Wokwi Serial Monitor (or UART):
 
 ---
 
-## Testing in Wokwi
-1. Open the project in Wokwi (or VS Code Wokwi extension) and start the simulation.
-2. Adjust **BATTERY SIM** (`batt_pot`) above ~67% (`>= 6.6V`) so the robot enters `READY`.
-3. Press **START** (key `1`) or send `TURN 90` in the Serial Monitor.
-   - *Tip*: In Wokwi, click the **MPU6050** component and set `gyroZ` (e.g., `90 °/s`) while turning to simulate physical rotation; if left at `0`, the controller detects `NO MOTION / Wheel/IMU Stall` after 1.8s.
-4. Test **E-STOP** (key `e`), **LOW BATT** (turn pot down), **OBSTACLE** (set HC-SR04 `< 15 cm`), and **TILT** (adjust MPU6050 `accelY` in Wokwi).
+## Setup & Running
+
+### Quick Setup
+Run the install script to create the `uv` virtual environment, install Python dependencies, and download the ESP32 MicroPython firmware (`ESP32_GENERIC-20231227-v1.22.0.bin`):
+```bash
+./install.sh
+```
+
+### 1. Python Environment (`uv`) (Manual)
+Create and activate the virtual environment and install `mpremote` + `pyserial`:
+```bash
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+```
+
+### 2. Wokwi Simulator (VS Code)
+1. Download `ESP32_GENERIC-20231227-v1.22.0.bin` from [micropython.org/download/ESP32_GENERIC](https://micropython.org/download/ESP32_GENERIC/) into `bin/` (matching `wokwi.toml`).
+2. Open the folder in VS Code with the **Wokwi Simulator** extension installed, then press `F1` → **Wokwi: Start Simulator**.
+3. Upload `main.py` and `src/` to the running simulator over the RFC2217 port (`4000` in `wokwi.toml`):
+   ```bash
+   mpremote connect port:rfc2217://localhost:4000 fs cp main.py : + fs cp -r src :
+   ```
+4. Reset the ESP32 (`Ctrl+D` in the Wokwi Serial Monitor or restart the simulation) to boot `main.py`.
+
+### 3. Testing in Wokwi
+1. Adjust **BATTERY SIM** (`batt_pot`) above ~67% (`>= 6.6V`) so the robot enters `READY`.
+2. Press **START** (key `1`) or send `TURN 90` in the Serial Monitor.
+   - *Tip*: Click the **MPU6050** component in Wokwi and set `gyroZ` (e.g., `90 °/s`) while turning to simulate physical rotation; if left at `0`, the controller detects `NO MOTION / Wheel/IMU Stall` after 1.8s.
+3. Test **E-STOP** (key `e`), **LOW BATT** (turn pot down), **OBSTACLE** (set HC-SR04 `< 15 cm`), and **TILT** (adjust MPU6050 `accelY` in Wokwi).

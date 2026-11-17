@@ -1,2 +1,7 @@
-ETR1100_Team02_Case2_v2.pdf
+.venv/
 __pycache__/
+.pytest_cache/
+*.pyc
+*.bin
+bin/
+ETR1100_Team02_Case2_v2.pdf
