@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "author": "Gary Vladimir Núñez López (Adapted for Case 2)",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": { "env": "micropython-20231227-v1.22.0" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": -13.2,
+      "left": 205.4,
+      "attrs": { "color": "red", "label": "FAULT LED" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 72,
+      "left": 172.25,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 25.4,
+      "left": -153.6,
+      "attrs": { "color": "green", "key": "1", "label": "START" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 52.8,
+      "left": -86.95,
+      "rotate": 90,
+      "attrs": { "value": "10000" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_estop",
+      "top": -55,
+      "left": -153.6,
+      "attrs": { "color": "red", "key": "e", "label": "E-STOP" }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "line_sw",
+      "top": -130,
+      "left": 75,
+      "attrs": { "label": "LINE SENSOR" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "batt_pot",
+      "top": 125,
+      "left": -115,
+      "attrs": { "label": "BATTERY SIM" }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz1",
+      "top": -122.4,
+      "left": 184.2,
+      "attrs": { "volume": "0.1" }
+    },
+    { "type": "wokwi-a4988", "id": "drv1", "top": 235.2, "left": -177.6, "attrs": {} },
+    {
+      "type": "wokwi-stepper-motor",
+      "id": "stepper1",
+      "top": 19.19,
+      "left": -274.98,
+      "attrs": { "size": "8", "arrow": "orange", "label": "LEFT" }
+    },
+    {
+      "type": "wokwi-stepper-motor",
+      "id": "stepper2",
+      "top": 19.19,
+      "left": 274.98,
+      "attrs": { "size": "8", "arrow": "orange", "label": "RIGHT" }
+    },
+    { "type": "wokwi-a4988", "id": "drv2", "top": 235.2, "left": 177.6, "attrs": {} },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "ultrasonic1",
+      "top": -132.9,
+      "left": -42.5,
+      "attrs": { "distance": "49" }
+    },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": 233.54,
+      "left": 0.23,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    { "type": "wokwi-mpu6050", "id": "imu1", "top": -92.18, "left": -218.48, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:GND.2", "led1:C", "gray", [ "v0" ] ],
+    [ "led1:A", "r1:1", "cyan", [ "v0" ] ],
+    [ "esp:12", "r1:2", "cyan", [ "v0", "h-14.21", "v76.8", "h163.2" ] ],
+    [ "btn1:1.l", "esp:5V", "red", [ "h-28.8", "v134.4" ] ],
+    [ "esp:27", "r2:2", "yellow", [ "h0" ] ],
+    [ "r2:1", "esp:GND.2", "white", [ "h-0.55", "v-37.55", "h172.8", "v19.2" ] ],
+    [ "r2:2", "btn1:2.r", "yellow", [ "h0" ] ],
+    [ "btn_estop:1.l", "esp:GND.1", "black", [ "h-15", "v140" ] ],
+    [ "btn_estop:2.r", "esp:26", "red", [ "h20", "v155" ] ],
+    [ "line_sw:1", "esp:GND.2", "black", [ "v20", "h30" ] ],
+    [ "line_sw:2", "esp:32", "purple", [ "v140", "h-95" ] ],
+    [ "line_sw:3", "esp:3V3", "red", [ "v110", "h-115" ] ],
+    [ "batt_pot:GND", "esp:GND.1", "black", [ "v10", "h40" ] ],
+    [ "batt_pot:SIG", "esp:34", "orange", [ "v-45", "h55" ] ],
+    [ "batt_pot:VCC", "esp:3V3", "red", [ "v-65", "h45" ] ],
+    [ "esp:15", "bz1:2", "orange", [ "v0", "h72.04", "v-192", "h38.4" ] ],
+    [ "bz1:1", "esp:GND.2", "gray", [ "v9.6", "h-48", "v57.6" ] ],
+    [ "drv1:SLEEP", "drv1:RESET", "white", [ "h-19.2", "v-9.6" ] ],
+    [ "drv1:GND.1", "esp:GND.1", "gray", [ "v0.08", "h105.75", "v-153.6" ] ],
+    [ "esp:5V", "drv1:VDD", "red", [ "h-33.41", "v96" ] ],
+    [ "drv2:GND.1", "esp:GND.1", "gray", [ "v0.08", "h19.35", "v19.2", "h-288", "v-172.8" ] ],
+    [ "drv2:VDD", "esp:5V", "red", [ "h28.95", "v38.48", "h-307.2", "v-124.8" ] ],
+    [ "drv2:RESET", "drv2:SLEEP", "white", [ "h-19.2", "v9.6" ] ],
+    [ "stepper2:A-", "drv2:2B", "magenta", [ "v0" ] ],
+    [ "stepper2:A+", "drv2:2A", "orange", [ "v0" ] ],
+    [ "stepper2:B+", "drv2:1A", "gold", [ "v0" ] ],
+    [ "stepper2:B-", "drv2:1B", "blue", [ "v0" ] ],
+    [ "stepper1:A-", "drv1:2B", "magenta", [ "v105.6", "h144", "v28.8" ] ],
+    [ "stepper1:A+", "drv1:2A", "orange", [ "v96", "h144", "v57.6" ] ],
+    [ "stepper1:B+", "drv1:1A", "gold", [ "v76.8", "h144", "v86.4" ] ],
+    [ "stepper1:B-", "drv1:1B", "blue", [ "v67.2", "h144", "v96" ] ],
+    [ "esp:19", "drv2:STEP", "yellow", [ "h52.84", "v192" ] ],
+    [ "esp:13", "drv1:STEP", "cyan", [ "h-215.81", "v124.8" ] ],
+    [ "esp:18", "drv2:DIR", "limegreen", [ "h43.24", "v192" ] ],
+    [ "esp:14", "drv1:DIR", "limegreen", [ "h-206.21", "v172.8" ] ],
+    [ "ultrasonic1:VCC", "esp:5V", "red", [ "v19.2", "h-57.6", "v192" ] ],
+    [ "ultrasonic1:GND", "esp:GND.2", "gray", [ "v19.2", "h75.6", "v38.4" ] ],
+    [ "ultrasonic1:TRIG", "esp:5", "cyan", [ "v9.6", "h105.2", "v115.2", "h-9.6", "v28.8" ] ],
+    [ "ultrasonic1:ECHO", "esp:17", "gold", [ "v38.4", "h76", "v76.8", "h-9.6", "v48" ] ],
+    [ "esp:3V3", "oled1:VCC", "red", [ "h-43.01", "v86.4", "h-28.8", "v96", "h115.05" ] ],
+    [ "esp:GND.3", "oled1:GND", "black", [ "h24.04", "v144", "h-86.4" ] ],
+    [ "oled1:SDA", "esp:21", "white", [ "v-28.8", "h115.27", "v-134.4" ] ],
+    [ "oled1:SCL", "esp:22", "violet", [ "v9.6", "h77.1", "v-201.6" ] ],
+    [ "imu1:VCC", "esp:3V3", "red", [ "v-9.6", "h67.28", "v67.2", "h67.2", "v38.4" ] ],
+    [ "imu1:GND", "esp:GND.1", "black", [ "v-19.2", "h67.28", "v86.4", "h38.4", "v172.8" ] ],
+    [ "imu1:SCL", "esp:22", "violet", [ "v-28.8", "h96.08", "v67.2", "h220.8", "v96" ] ],
+    [ "imu1:SDA", "esp:21", "white", [ "v-28.8", "h-57.52", "v96", "h124.8", "v9.6", "h28.8", "v153.6", "h19.2", "v201.6", "h326.4", "v-144", "h-76.8", "v-124.8" ] ]
+  ],
+  "dependencies": {}
+}
